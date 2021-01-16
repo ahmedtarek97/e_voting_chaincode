@@ -11,7 +11,6 @@ class voting_contract extends Contract {
         console.info('============= END : Initialize Ledger ===========');
     }
 
-
     async createVoter(ctx, userInput) {
         let voterSchema = {
             name: 'voterSchema',
@@ -20,62 +19,38 @@ class voting_contract extends Contract {
                 type: 'string',
                 required: 'true'
             }, {
-
-
                 name: 'lastName',
                 type: 'string',
                 required: 'true'
-
-
             }, {
-
-
                 name: 'DistrictName',
                 type: 'string',
                 required: 'true'
-
-
             }, {
-
-
                 name: 'electionID',
                 type: 'asset',
                 required: 'true'
-
-
             },{
-
-
                 name: 'VoterId',
                 type: 'string',
                 default:uuid.v4
-
-
             }
-
-
             ]
         }
 
         await createAssetObj(ctx, JSON.stringify(voterSchema), userInput);
         voter = toJSON(userInput);
-
         
 
         let newkey = voter.VoterId + ctx.stub.getTxTimestamp().seconds.low.toString();
-
         
         for(let i=0;i<election.voters.length;i++)
         {
-
             if (election.voters[i] === voter.VoterId)
             {
-
                 throw new Error('This voter is already signed up for this election');
 
-
             }
-
 
         }
 
@@ -89,9 +64,6 @@ class voting_contract extends Contract {
         });
 
     }
-
-
-
 
     async createElection(ctx, txObj) {
 
@@ -109,16 +81,10 @@ class voting_contract extends Contract {
                 type: 'String',
                 required: 'true'
 
-
-
-
             }, {
-
                 name: 'electionCountry',
                 type: 'String',
                 required: 'true'
-
-
 
 
             }, {
@@ -154,16 +120,7 @@ class voting_contract extends Contract {
             Record: txObj
         });
 
-
-
-
-
-
-
     }
-
-
-
 
 
     async createCandidate(ctx, txObj) {
@@ -202,12 +159,6 @@ class voting_contract extends Contract {
 
             }]
 
-
-
-
-
-
-
         }
 
         await createAssetObj(ctx, JSON.stringify(candidateSchema), txObj);
@@ -215,11 +166,7 @@ class voting_contract extends Contract {
 
         let newkey = txObj.candidateId + ctx.stub.getTxTimestamp().seconds.low.toString();
 
-
-
-
         candidate.score = 0;
-
         
         candidateObj = {id: candidate.id , score:candidate.score}
 
@@ -228,22 +175,14 @@ class voting_contract extends Contract {
         await ctx.stub.putState(newkey, Buffer.from(JSON.stringify(candidate)));
 
 
-
         return JSON.stringify({
             Key: newkey,
             Record: txObj
         });
 
-
     }
 
-
-
-
-
-
     async vote(ctx, txObj) {
-
 
         let voteSchema = {
 
@@ -268,8 +207,6 @@ class voting_contract extends Contract {
                     type: 'String',
                     required: 'true'
 
-
-
                 }]
         }
 
@@ -288,8 +225,6 @@ class voting_contract extends Contract {
                 flag = true;
                 break;
             }
-
-
         }
 
         if (!flag) {
@@ -308,15 +243,7 @@ class voting_contract extends Contract {
             Record: txObj
         });
 
-
-
-
     }
-
-
-
-
-
 
     async queryAllAsset(ctx, asset) {
         return JSON.stringify(await getAllAssets(ctx, asset));
@@ -346,9 +273,6 @@ class voting_contract extends Contract {
         let asset = await editAsset(ctx, key, newProparties);
         return JSON.stringify({ key: key, asset });
     }
-
-
-
 
 }
 
